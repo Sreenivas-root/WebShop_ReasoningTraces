@@ -7,7 +7,8 @@ from web_agent_site.utils import DEFAULT_FILE_PATH
 from web_agent_site.engine.engine import load_products
 
 all_products, *_ = load_products(filepath=DEFAULT_FILE_PATH)
-
+# all_products, *_ = load_products(filepath='../web_agent_site/data/items_shuffle.json')
+print('Products loaded.')
 
 docs = []
 for p in tqdm(all_products, total=len(all_products)):

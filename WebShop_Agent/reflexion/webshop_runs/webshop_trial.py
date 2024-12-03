@@ -1,6 +1,6 @@
 import os
 import sys
-import openai
+from openai import OpenAI
 import requests
 from bs4 import BeautifulSoup
 from bs4.element import Comment
@@ -9,9 +9,12 @@ from dotenv import load_dotenv
 from typing import Any, Dict, List, Tuple
  
 load_dotenv()
-openai.api_key = os.environ["OPENAI_API_KEY"]
+# openai.api_key = os.environ["OPENAI_API_KEY"]
+client = OpenAI(
+  api_key=os.environ['OPENAI_API_KEY'],  # this is also the default, it can be omitted
+)
 
-WEBSHOP_URL = "http://3.83.245.205:3000"
+WEBSHOP_URL = "http://127.0.0.1:3000"
 ACTION_TO_TEMPLATE = {
     'Description': 'description_page.html',
     'Features': 'features_page.html',
@@ -24,29 +27,33 @@ with open(prompt_file, 'r') as f:
     BASE_PROMPT = f.read()
 
 def llm(prompt, stop=["\n"]):
+    messages = [{"role": "user", "content": prompt}]
     try:
         cur_try = 0
         while cur_try < 6:
-            response = openai.Completion.create(
-              model="text-davinci-002",
-              prompt=prompt,
-              temperature=cur_try * 0.2,
-              max_tokens=100,
-              top_p=1,
-              frequency_penalty=0.0,
-              presence_penalty=0.0,
-              stop=stop
+            response = client.chat.completions.create(
+            model='gpt-4o-mini',
+            messages=messages,
+            temperature=cur_try * 0.2,
+            max_tokens=100,
+            stop=stop,
+            # top_p=1,
+            # frequency_penalty=0.0,
+            # presence_penalty=0.0,
             )
-            text = response["choices"][0]["text"]
+            text = response.choices[0].message.content
+            
             # dumb way to do this
             if len(text.strip()) >= 5:
-                return response["choices"][0]["text"]
+                return response.choices[0].message.content
             cur_try += 1
         return ""
     except Exception as e:
-        print(prompt)
+        print(f'{e} : {prompt}')
+        print()
         import sys
         sys.exit(1)
+
 
 def clean_str(p):
   return p.encode().decode("unicode-escape").encode("latin1").decode("utf-8")
@@ -145,7 +152,6 @@ def webshop_text(session, page_type, query_string='', page_num=1, asin='', optio
 class webshopEnv:
     def __init__(self):
         self.sessions = {}
-  
     def step(self, session, action):
         done = False
         observation_ = None
@@ -168,8 +174,8 @@ class webshopEnv:
                 assert self.sessions[session]['page_type'] in ['search', 'item_sub', 'item']
                 self.sessions[session] = {'session': session, 'page_type': 'init'}
             elif button == 'Next >':
-                assert False # ad hoc page limitation
-                assert self.sessions[session]['page_type'] == 'search'
+                # assert False # ad hoc page limitation
+                assert self.sessions[session]['page_type'] == 'search', 'search'
                 self.sessions[session]['page_num'] += 1
             elif button == '< Prev':
                 assert self.sessions[session]['page_type'] in ['search', 'item_sub', 'item']
@@ -187,14 +193,14 @@ class webshopEnv:
                 self.sessions[session]['subpage'] = button
             else:
                 if self.sessions[session]['page_type'] == 'search':
-                    assert button in self.sessions[session].get('asins', [])  # must be asins
+                    assert button in self.sessions[session].get('asins', [])
                     self.sessions[session]['page_type'] = 'item'
                     self.sessions[session]['asin'] = button
                 elif self.sessions[session]['page_type'] == 'item':
-                    assert 'option_types' in self.sessions[session]
+                    assert 'option_types' in self.sessions[session], 'option_types'
                     assert button in self.sessions[session]['option_types'], (button, self.sessions[session]['option_types'])  # must be options
                     option_type = self.sessions[session]['option_types'][button]
-                    if not 'options' in self.sessions[session]:
+                    if 'options' not in self.sessions[session]:
                         self.sessions[session]['options'] = {}
                     self.sessions[session]['options'][option_type] = button
                     observation_ = f'You have clicked {button}.'
@@ -224,7 +230,8 @@ def webshop_run(idx, env, base_prompt, memory: List[str], to_print=True) -> Tupl
         try:
             res = env.step(idx, action)
             observation = res[0]
-        except AssertionError:
+        except AssertionError as e:
+            print(f'failed - {action} -> {e}')
             observation = 'Invalid action!'
 
         if action.startswith('think'):
@@ -245,7 +252,7 @@ def webshop_run(idx, env, base_prompt, memory: List[str], to_print=True) -> Tupl
             print(res)
             return env_history, res[1] == 1.0
 
-        action = llm(init_prompt + prompt[-(6400-len(init_prompt)):], stop=['\n']).lstrip(' ')
+        action = llm(init_prompt + prompt[-(8192-len(init_prompt)):], stop=['\n']).lstrip(' ')
 
     return env_history, False
 

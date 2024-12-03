@@ -7,7 +7,7 @@ import random
 from collections import defaultdict
 from ast import literal_eval
 from decimal import Decimal
-
+# import ijson
 import cleantext
 from tqdm import tqdm
 from rank_bm25 import BM25Okapi
@@ -229,7 +229,10 @@ def clean_product_keys(products):
 
 def load_products(filepath, num_products=None, human_goals=True):
     # TODO: move to preprocessing step -> enforce single source of truth
-    with open(filepath) as f:
+    # products = []
+    with open(filepath, 'rb') as f:
+        # for product in ijson.items(f, 'item'):
+        #     products.append(product)  # Add each product to the list
         products = json.load(f)
     print('Products loaded.')
     products = clean_product_keys(products)

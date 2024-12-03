@@ -11,8 +11,7 @@ run dockerfile
 This will copy the folder contents while building so active changes won't be considered
 
 run dockerfile with folder mounting
-> docker run -it -p 3000:3000 -v /path/to/project:/app webshop-app /bin/bash
-
+> docker run  --name webshop -it -p 3000:3000 -v /Users/aadi/UIUC/"ml for llms"/WebShop_ReasoningTraces:/app webshop-app /bin/bash
 
 You will now enter a linux terminal
 - Verify folder structure
@@ -37,7 +36,7 @@ cd ..
 
 # .sh file not found
 This can happen if the .sh file is in CRLF and not LF
-> dos2unix file.sh
+> dos2unix setup.sh
 
 # Any library issue or infinite recursion
 - Rerun dockerfile
