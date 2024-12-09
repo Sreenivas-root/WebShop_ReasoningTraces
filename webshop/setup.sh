@@ -21,7 +21,7 @@ if [ -z "$data" ]; then
 fi
 
 # Install Python Dependencies
-pip install -r requirements.txt;
+pip install --no-cache-dir -r requirements.txt;
 
 # Install Environment Dependencies via `conda`
 conda install -c pytorch faiss-cpu;
@@ -56,18 +56,18 @@ mkdir -p indexes
 cd ..
 
 # Create logging folder + samples of log data
-get_human_trajs () {
-  PYCMD=$(cat <<EOF
-import gdown
-url="https://drive.google.com/drive/u/1/folders/16H7LZe2otq4qGnKw_Ic1dkt-o3U9Zsto"
-gdown.download_folder(url, quiet=True, remaining_ok=True)
-EOF
-  )
-  python -c "$PYCMD"
-}
+# get_human_trajs () {
+#   PYCMD=$(cat <<EOF
+# import gdown
+# url="https://drive.google.com/drive/u/1/folders/16H7LZe2otq4qGnKw_Ic1dkt-o3U9Zsto"
+# gdown.download_folder(url, quiet=True, remaining_ok=True)
+# EOF
+  # )
+  # python -c "$PYCMD"
+# }
 mkdir -p user_session_logs/
 cd user_session_logs/
-echo "Downloading 50 example human trajectories..."
+echo "Downloading 50 example hdokcuman trajectories..."
 get_human_trajs
 echo "Downloading example trajectories complete"
 cd ..

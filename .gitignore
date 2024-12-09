@@ -1,2 +1,10 @@
 .vscode/
 *.env
+./WebShop_ReasoningTraces/WebShop_Agent/finetune/model
+./WebShop_ReasoningTraces/WebShop_Agent/finetune/q4_model
+./WebShop_ReasoningTraces/WebShop_Agent/finetune/outputs--llama3.18b
+./WebShop_ReasoningTraces/WebShop_Agent/finetune/outputs
+./WebShop_ReasoningTraces/WebShop_Agent/finetune/wandb
+./WebShop_ReasoningTraces/WebShop_Agent/finetune/llama.cpp
+*.gguf
+

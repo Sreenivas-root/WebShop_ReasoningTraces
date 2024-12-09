@@ -6,7 +6,7 @@ build dockerfile
 Will take time 
 
 run dockerfile
-> docker run -it -p 3000:3000 webshop-app /bin/bash
+> docker run --name webshop -it -p 3000:3000 webshop-app /bin/bash
 
 This will copy the folder contents while building so active changes won't be considered
 
@@ -16,7 +16,7 @@ run dockerfile with folder mounting
 You will now enter a linux terminal
 - Verify folder structure
 - rerun setup.sh
-> ./setup.sh -d small
+> ./setup.sh -d all
 - run run_dev.sh
 > ./run_dev.sh
 

@@ -7,7 +7,9 @@ from bs4.element import Comment
 from env_history import EnvironmentHistory
 from dotenv import load_dotenv
 from typing import Any, Dict, List, Tuple
- 
+import ollama
+
+
 load_dotenv()
 # openai.api_key = os.environ["OPENAI_API_KEY"]
 client = OpenAI(
@@ -22,15 +24,40 @@ ACTION_TO_TEMPLATE = {
     'Attributes': 'attributes_page.html',
 }
 
-prompt_file = "./base_prompt.txt"
+prompt_file = "./base_new.txt"
 with open(prompt_file, 'r') as f:
     BASE_PROMPT = f.read()
+
+ollama_client = OpenAI(base_url="http://127.0.0.1:5050", api_key = 'ollama')
+
 
 def llm(prompt, stop=["\n"]):
     messages = [{"role": "user", "content": prompt}]
     try:
         cur_try = 0
         while cur_try < 6:
+            # response = ollama.chat(model='quant_model2:latest', messages=messages)
+            # text = response['message']['content']
+
+            # # # dumb way to do this
+            # if len(text.strip()) >= 5:
+            #     return response['message']['content']
+
+            # response = client.chat.completions.create(
+            # messages=[
+            #     {
+            #         'role': 'user',
+            #         'content': 'Say this is a test',
+            #     }
+            # ],
+            # model='unsloth_model:latest')
+
+            # text = response.choices[0].message.content
+            
+            # # dumb way to do this
+            # if len(text.strip()) >= 5:
+            #     return response.choices[0].message.content
+            
             response = client.chat.completions.create(
             model='gpt-4o-mini',
             messages=messages,

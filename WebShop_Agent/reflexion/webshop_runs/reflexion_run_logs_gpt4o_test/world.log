@@ -1,0 +1,74 @@
+
+
+***** Start Trial #0 *****
+
+Environment #0 Trial #0: SUCCESS
+Environment #1 Trial #0: SUCCESS
+Environment #2 Trial #0: SUCCESS
+Environment #3 Trial #0: FAIL
+Environment #4 Trial #0: FAIL
+Environment #5 Trial #0: FAIL
+Environment #6 Trial #0: FAIL
+Environment #7 Trial #0: FAIL
+Environment #8 Trial #0: SUCCESS
+Environment #9 Trial #0: FAIL
+
+-----
+SUCCESS: 4
+ADDITIONAL SUCCESS: 4
+FAIL: 6
+TOTAL: 10
+ACCURACY: 0.4
+-----
+
+
+***** End Trial #0 *****
+
+
+
+***** Start Trial #1 *****
+
+Environment #0 Trial #1: SUCCESS
+Environment #1 Trial #1: SUCCESS
+Environment #2 Trial #1: SUCCESS
+Environment #3 Trial #1: FAIL
+Environment #4 Trial #1: FAIL
+Environment #5 Trial #1: FAIL
+Environment #6 Trial #1: FAIL
+Environment #7 Trial #1: FAIL
+Environment #8 Trial #1: SUCCESS
+Environment #9 Trial #1: FAIL
+
+-----
+SUCCESS: 4
+ADDITIONAL SUCCESS: 0
+FAIL: 6
+TOTAL: 10
+ACCURACY: 0.4
+-----
+
+
+***** End Trial #1 *****
+
+
+
+***** Start Trial #2 *****
+
+Environment #0 Trial #2: SUCCESS
+Environment #1 Trial #2: SUCCESS
+Environment #2 Trial #2: SUCCESS
+Environment #3 Trial #2: FAIL
+Environment #4 Trial #2: FAIL
+Environment #5 Trial #2: FAIL
+Environment #6 Trial #2: FAIL
+Environment #7 Trial #2: SUCCESS
+Environment #8 Trial #2: SUCCESS
+Environment #9 Trial #2: FAIL
+
+-----
+SUCCESS: 5
+ADDITIONAL SUCCESS: 1
+FAIL: 5
+TOTAL: 10
+ACCURACY: 0.5
+-----

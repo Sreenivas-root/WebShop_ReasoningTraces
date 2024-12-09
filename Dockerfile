@@ -11,7 +11,7 @@ RUN apt-get update && \
     rm -rf /var/lib/apt/lists/*
 
 # Install Anaconda
-RUN wget https://repo.anaconda.com/miniconda/Miniconda3-latest-Linux-aarch64.sh -O miniconda.sh && \
+RUN wget https://repo.anaconda.com/miniconda/Miniconda3-latest-Linux-x86_64.sh -O miniconda.sh && \
     bash miniconda.sh -b -p /opt/conda && \
     rm miniconda.sh
 
@@ -28,9 +28,9 @@ WORKDIR /app/webshop
 # Install requirements
 RUN dos2unix setup.sh
 RUN chmod +x setup.sh
-RUN ./setup.sh -d small
+RUN ./setup.sh -d all
 
-RUN pip install --no-cache-dir -r requirements.txt
+RUN rm -rf /root/.cache/pip && pip install --no-cache-dir -r requirements.txt
 
 RUN dos2unix run_dev.sh
 RUN chmod +x run_dev.sh
