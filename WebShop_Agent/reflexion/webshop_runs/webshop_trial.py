@@ -31,6 +31,8 @@ with open(prompt_file, 'r') as f:
 ollama_client = OpenAI(base_url="http://127.0.0.1:5050", api_key = 'ollama')
 
 
+
+
 def llm(prompt, stop=["\n"]):
     messages = [{"role": "user", "content": prompt}]
     try:
